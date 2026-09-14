@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+/* Mode sombre piloté par la classe `.dark` sur <html> (toggle utilisateur ou préférence système). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- Design tokens (clair = défaut, style Revolut : fond gris très clair, cartes blanches) ---------- */
+:root {
+  color-scheme: light;
+  --canvas: #f4f4f8;
+  --surface: #ffffff;
+  --surface-2: #f6f6f9;
+  --line: #e9e9ef;
+  --ink: #0e0e15;
+  --ink-2: #6c6c80;
+  --ink-3: #9c9cb0;
+  --accent: #5b4cff;
+  --accent-strong: #4839e6;
+  --accent-soft: #eeecff;
+  --accent-fg: #ffffff;
+  --positive: #16a34a;
+  --positive-soft: #e6f7ec;
+  --negative: #e5484d;
+  --negative-soft: #fde9ea;
+  --warning: #e08a00;
+  --warning-soft: #fef1dc;
+  --grid: #ececf1;
+  --shadow-card: 0 1px 2px rgba(14, 14, 21, 0.04), 0 10px 30px -18px rgba(14, 14, 21, 0.18);
+  --shadow-float: 0 12px 32px -8px rgba(91, 76, 255, 0.45);
+}
+
+.dark {
+  color-scheme: dark;
+  --canvas: #0a0a0f;
+  --surface: #15151c;
+  --surface-2: #1d1d26;
+  --line: #262631;
+  --ink: #f5f5f9;
+  --ink-2: #a3a3b8;
+  --ink-3: #6f6f85;
+  --accent: #7c6cff;
+  --accent-strong: #9083ff;
+  --accent-soft: #23204a;
+  --accent-fg: #ffffff;
+  --positive: #2fd07a;
+  --positive-soft: #10301f;
+  --negative: #f87171;
+  --negative-soft: #3a1a1d;
+  --warning: #fbbf24;
+  --warning-soft: #3a2a0a;
+  --grid: #24242e;
+  --shadow-card: none;
+  --shadow-float: 0 12px 32px -8px rgba(124, 108, 255, 0.55);
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
+  --color-positive: var(--positive);
+  --color-positive-soft: var(--positive-soft);
+  --color-negative: var(--negative);
+  --color-negative-soft: var(--negative-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-grid: var(--grid);
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius-card: 1.25rem;
+  --radius-chip: 0.875rem;
+  --shadow-card: var(--shadow-card);
+  --shadow-float: var(--shadow-float);
+}
+
+/* ---------- Base (dans @layer base pour rester sous les utilitaires Tailwind) ---------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-feature-settings: "cv11", "ss01";
+    overscroll-behavior-y: none;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+@layer utilities {
+  /* Chiffres alignés (listes, tableaux, axes) */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Zone sûre (encoche / barre iOS) */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* ---------- Animations ---------- */
+@keyframes yf-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes yf-sheet-up {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes yf-pop {
+  from {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.anim-fade-in {
+  animation: yf-fade-in 0.18s ease-out both;
+}
+.anim-sheet-up {
+  animation: yf-sheet-up 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.anim-pop {
+  animation: yf-pop 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade-in,
+  .anim-sheet-up,
+  .anim-pop {
+    animation: none;
+  }
+}
+
+/* Recharts : on retire le focus outline par défaut des surfaces SVG */
+.recharts-wrapper:focus,
+.recharts-surface:focus {
+  outline: none;
+}
