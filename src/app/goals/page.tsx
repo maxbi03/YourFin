@@ -24,7 +24,7 @@ export default function GoalsPage() {
 
   return (
     <div className="space-y-4 anim-fade-in">
-      <PageHeader title={t.goals.title} backHref="/more" action={<Button size="sm" onClick={() => setEditing("new")}><Plus size={16} /> {t.goals.add}</Button>} />
+      <PageHeader title={t.goals.title} backHref="/more" action={<Button size="sm" onClick={() => setEditing("new")} className="whitespace-nowrap"><Plus size={16} /> Nouveau</Button>} />
 
       {sorted.length === 0 ? (
         <EmptyState icon={<Target size={22} />} title={t.goals.empty} action={<Button size="sm" onClick={() => setEditing("new")}>{t.goals.add}</Button>} />
