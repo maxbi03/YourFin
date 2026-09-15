@@ -4,6 +4,7 @@ import { ChevronRight, Download, FlaskConical, Repeat, Shapes, Sparkles, Trash2,
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { Button, Card, ConfirmSheet, Field, Input, PageHeader, SectionTitle, Segmented, Select, Sheet, Toggle } from "@/components/ui/primitives";
+import { AccountSection } from "@/components/settings/AccountSection";
 import { exportBackup, importBackup, isBackupFile, resetAll, updateSettings } from "@/lib/db/repo";
 import { loadDemoData } from "@/lib/db/demo";
 import { parseAmountInput } from "@/lib/domain/money";
@@ -96,6 +97,8 @@ export default function SettingsPage() {
           </div>
         </Card>
       </section>
+
+      <AccountSection />
 
       <section>
         <SectionTitle>{t.settings.appearance}</SectionTitle>

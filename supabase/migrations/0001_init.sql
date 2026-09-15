@@ -223,4 +223,9 @@ create table if not exists public.keepalive (
   constraint keepalive_singleton check (id = 1)
 );
 insert into public.keepalive (id) values (1) on conflict (id) do nothing;
--- Pas de RLS ici volontairement : ni sensible ni lié à un utilisateur, juste un compteur technique.
+
+-- Supabase active RLS par défaut sur toute nouvelle table, même sans `enable row level security`
+-- explicite. Comme cette table n'est ni sensible ni liée à un utilisateur (juste un horodatage
+-- technique), on ajoute une policy volontairement permissive plutôt que de lutter contre ce défaut.
+alter table public.keepalive enable row level security;
+create policy "keepalive_public_rw" on public.keepalive for all using (true) with check (true);
