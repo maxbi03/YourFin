@@ -1,9 +1,13 @@
 /* Service worker YourFin — cache hors-ligne minimal.
    - Assets statiques (/_next/static, icônes) : cache-first (immuables).
    - Navigations : network-first avec repli sur la version en cache, puis sur la page d'accueil.
-   Incrémente CACHE_VERSION pour invalider les anciens caches après un déploiement. */
-const CACHE_VERSION = "yourfin-v1";
-const APP_SHELL = ["/", "/manifest.webmanifest", "/icons/icon-192.png", "/icons/icon-512.png"];
+   Incrémente CACHE_VERSION pour invalider les anciens caches après un déploiement.
+
+   BASE est déduit de l'URL du script lui-même (pas codé en dur) : le même fichier fonctionne
+   tel quel servi à la racine (dev local, Vercel…) ou sous un sous-chemin (github.io/YourFin/). */
+const CACHE_VERSION = "yourfin-v2";
+const BASE = self.location.pathname.replace(/sw\.js$/, ""); // ex. "/" ou "/YourFin/"
+const APP_SHELL = [BASE, `${BASE}manifest.webmanifest`, `${BASE}icons/icon-192.png`, `${BASE}icons/icon-512.png`];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -38,13 +42,13 @@ self.addEventListener("fetch", (event) => {
           caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
           return response;
         })
-        .catch(async () => (await caches.match(request)) || (await caches.match("/")) || Response.error()),
+        .catch(async () => (await caches.match(request)) || (await caches.match(BASE)) || Response.error()),
     );
     return;
   }
 
   // Assets : cache d'abord, réseau ensuite (et mise en cache).
-  if (url.pathname.startsWith("/_next/static/") || url.pathname.startsWith("/icons/") || url.pathname.endsWith(".webmanifest")) {
+  if (url.pathname.startsWith(`${BASE}_next/static/`) || url.pathname.startsWith(`${BASE}icons/`) || url.pathname.endsWith(".webmanifest")) {
     event.respondWith(
       caches.match(request).then(
         (cached) =>

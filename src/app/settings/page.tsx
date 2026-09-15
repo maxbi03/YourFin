@@ -10,6 +10,7 @@ import { parseAmountInput } from "@/lib/domain/money";
 import { CANTONS } from "@/lib/domain/tax";
 import type { MaritalStatus, ThemePref } from "@/lib/domain/types";
 import { APP_VERSION, isPro } from "@/lib/features";
+import { BASE_PATH } from "@/lib/basePath";
 import { useSettings } from "@/lib/hooks/useDb";
 import { useT } from "@/lib/i18n";
 
@@ -170,12 +171,12 @@ export default function SettingsPage() {
       <ConfirmSheet
         open={confirmDemo}
         onClose={() => setConfirmDemo(false)}
-        onConfirm={() => loadDemoData().then(() => window.location.replace("/"))}
+        onConfirm={() => loadDemoData().then(() => window.location.replace(`${BASE_PATH}/`))}
         title="Charger des données de démo ?"
         message="Remplace tes comptes, transactions, budgets et objectifs par un exemple réaliste de 5 mois. Exporte une sauvegarde avant si tu as déjà saisi des données."
         confirmLabel="Charger la démo"
       />
-      <ConfirmSheet open={confirmReset} onClose={() => setConfirmReset(false)} onConfirm={() => resetAll().then(() => window.location.replace("/"))} title={t.settings.reset} message={t.settings.resetConfirm} confirmLabel="Tout effacer" danger />
+      <ConfirmSheet open={confirmReset} onClose={() => setConfirmReset(false)} onConfirm={() => resetAll().then(() => window.location.replace(`${BASE_PATH}/`))} title={t.settings.reset} message={t.settings.resetConfirm} confirmLabel="Tout effacer" danger />
 
       <Sheet open={!!importFile} onClose={() => setImportFile(null)} title={t.settings.import}>
         {importFile && (
@@ -183,7 +184,7 @@ export default function SettingsPage() {
             <p className="text-[13px] text-ink-2">
               <span className="font-semibold text-ink">{importFile.name}</span> · {(importFile.data as { transactions: unknown[] }).transactions.length} transactions
             </p>
-            <Button full onClick={async () => { if (isBackupFile(importFile.data)) await importBackup(importFile.data, "replace"); setImportFile(null); window.location.replace("/"); }}>
+            <Button full onClick={async () => { if (isBackupFile(importFile.data)) await importBackup(importFile.data, "replace"); setImportFile(null); window.location.replace(`${BASE_PATH}/`); }}>
               Remplacer mes données par cette sauvegarde
             </Button>
             <Button full variant="secondary" onClick={async () => { if (isBackupFile(importFile.data)) await importBackup(importFile.data, "merge"); setImportFile(null); }}>

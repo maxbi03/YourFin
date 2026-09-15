@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AppShell } from "@/components/layout/AppShell";
 import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
+import { BASE_PATH } from "@/lib/basePath";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,10 +15,10 @@ export const metadata: Metadata = {
   title: { default: "YourFin", template: "%s · YourFin" },
   description: "Your money, Your control. Budget, suivi des dépenses et analyse — gratuit et local.",
   applicationName: "YourFin",
-  manifest: "/manifest.webmanifest",
+  manifest: `${BASE_PATH}/manifest.webmanifest`,
   appleWebApp: { capable: true, statusBarStyle: "default", title: "YourFin" },
   icons: {
-    apple: "/icons/apple-touch-icon.png",
+    apple: `${BASE_PATH}/icons/apple-touch-icon.png`,
   },
   formatDetection: { telephone: false },
 };
