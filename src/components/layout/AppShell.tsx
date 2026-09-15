@@ -110,7 +110,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="flex min-h-dvh w-full">
         {/* Barre latérale (desktop) */}
         <aside className="hidden md:flex md:w-64 md:flex-col md:border-r md:border-line md:bg-surface md:px-4 md:py-6 lg:w-72 sticky top-0 h-dvh">
-          <Link href="/" className="mb-8 flex items-center gap-3 px-2">
+          <Link href="/" prefetch={false} className="mb-8 flex items-center gap-3 px-2">
             <Logo size={34} />
             <div>
               <div className="text-[17px] font-bold tracking-tight leading-none">YourFin</div>
@@ -122,6 +122,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Link
                 key={item.href}
                 href={item.href}
+                prefetch={item.href === "/" ? false : undefined}
                 className={cx(
                   "flex items-center gap-3 rounded-2xl px-3 py-2.5 text-[14px] font-medium transition",
                   isActive(item.href) ? "bg-accent-soft text-accent" : "text-ink-2 hover:bg-surface-2 hover:text-ink",
@@ -168,7 +169,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               const active = isActive(tab.href);
               return (
                 <li key={tab.href} className="flex-1">
-                  <Link href={tab.href} className={cx("flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition", active ? "text-accent" : "text-ink-3")}>
+                  <Link href={tab.href} prefetch={tab.href === "/" ? false : undefined} className={cx("flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition", active ? "text-accent" : "text-ink-3")}>
                     <span className={cx("flex h-7 w-12 items-center justify-center rounded-full transition", active && "bg-accent-soft")}>
                       <tab.icon size={20} strokeWidth={active ? 2.4 : 2} />
                     </span>
